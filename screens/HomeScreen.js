@@ -1,17 +1,19 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
+import {Text} from 'react-native-elements';
 
 import {getImagesAsync} from '../api/pexels';
+import ImageList from '../components/ImageList';
 
 const HomeScreen = () => {
   const [photos, setPhotos] = useState([]);
   const [headers, setHeaders] = useState([]);
 
   const getImages = async () => {
-    const {headers, data} = await getImagesAsync();
+    const {headers: resHeaders, data} = await getImagesAsync();
     // console.log('RESLT', JSON.stringify(headers, null, 4));
     // console.log('RESLT', JSON.stringify(data, null, 4));
-    setHeaders(headers);
+    setHeaders(resHeaders);
     setPhotos(data.photos);
   };
 
@@ -22,9 +24,12 @@ const HomeScreen = () => {
   return (
     <View>
       <View style={style.headerContainer}>
-        <Text>x-ratelimit-limit : {headers['x-ratelimit-limit']}</Text>
-        <Text>x-ratelimit-remaining : {headers['x-ratelimit-remaining']}</Text>
+        <Text h3>x-ratelimit-limit / remaining</Text>
+        <Text h4>
+          {headers['x-ratelimit-limit']} / {headers['x-ratelimit-remaining']}
+        </Text>
       </View>
+      <ImageList photos={photos} />
     </View>
   );
 };
@@ -38,6 +43,6 @@ const style = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(128,128,128,.25)',
     padding: 5,
-    margin: 5
+    margin: 5,
   },
 });
