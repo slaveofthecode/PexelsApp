@@ -14,7 +14,7 @@ const CardImage = ({image}) => {
       <Image
         source={{
           uri:
-            image.src.tiny ??
+            image.src.portrait ??
             'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/800px-Image_not_available.png',
         }}
         style={style.image}
