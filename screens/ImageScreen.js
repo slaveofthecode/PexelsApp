@@ -4,14 +4,16 @@ import React, {useCallback} from 'react';
 import {
   View,
   Text,
+  TouchableOpacity,
   Image,
   StyleSheet,
   Linking,
   Alert,
   PermissionsAndroid,
   Platform,
+  ScrollView,
 } from 'react-native';
-import {Card, Button, Icon} from 'react-native-elements';
+import {Button, Icon} from 'react-native-elements';
 import RNFetchBlob from 'rn-fetch-blob';
 
 const ImageScreen = ({route}) => {
@@ -84,57 +86,63 @@ const ImageScreen = ({route}) => {
   }, [image.photographer_url]);
 
   return (
-    <View style={{backgroundColor: '#000', flex: 1}}>
-      <Card containerStyle={style.containerCard}>
-        <Card.Title
-          style={{color: '#fff', textTransform: 'capitalize'}}
-          onPress={handleOnPressPhotographer}>
-          {image.photographer}
-        </Card.Title>
-        <View style={{height: '80%'}}>
-          <Image
-            source={{
-              uri: image.src.large,
-            }}
-            style={{
-              width: '100%',
-              height: 250,
-              resizeMode: 'contain',
-              flex: 1,
-            }}
-          />
-          <Text
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              height: 50,
-              width: '100%',
-              backgroundColor: 'rgba(0,0,0,.75)',
-              color: '#fff',
-              padding: 15,
-            }}>
-            {image.id}
-          </Text>
-        </View>
-        <Card.Divider width={1} style={{marginVertical: 15}} />
+    <ScrollView>
+      <TouchableOpacity onPress={handleOnPressPhotographer}>
+        <Text style={styles.titleCard}>{image.photographer}</Text>
+      </TouchableOpacity>
+
+      <View style={styles.containerImage}>
+        <Image source={{uri: image.src.large}} style={styles.image} />
+        <Text style={styles.textId}>{image.id}</Text>
+      </View>
+
+      <View style={styles.containerButton}>
         <Button
           icon={<Icon name="download" type="font-awesome" color="#ffffff" />}
           title="download"
-          buttonStyle={{backgroundColor: 'rgb(5, 160, 129)'}}
+          buttonStyle={styles.buttonDonwload}
           onPress={handleOnPressBtnDownload}
         />
-      </Card>
-    </View>
+      </View>
+    </ScrollView>
   );
 };
 
 export default ImageScreen;
 
-const style = StyleSheet.create({
-  containerCard: {
-    backgroundColor: 'rgba(0,0,0,.5)',
-    borderWidth: 0,
-    flex: 1,
-    flexDirection: 'column',
+const styles = StyleSheet.create({
+  titleCard: {
+    height: 40,
+    backgroundColor: 'rgba(0,0,0,1)',
+    textAlign: 'center',
+    paddingTop: 10,
+    letterSpacing: 2,
+    color: '#fff',
+    textTransform: 'capitalize',
+  },
+  containerImage: {
+    backgroundColor: 'rgba(0,0,0,1)',
+  },
+  image: {
+    width: '100%',
+    height: 500,
+    resizeMode: 'cover',
+  },
+  textId: {
+    position: 'absolute',
+    bottom: 0,
+    height: 50,
+    width: '100%',
+    backgroundColor: 'rgba(0,0,0,.75)',
+    color: '#fff',
+    padding: 15,
+  },
+  containerButton: {
+    height: 100,
+    backgroundColor: 'rgba(0,0,0,1)',
+  },
+  buttonDonwload: {
+    margin: 10,
+    backgroundColor: 'rgb(5, 160, 129)',
   },
 });
